@@ -1,10 +1,14 @@
-page 50101 CustomerCard
+/// <summary>
+/// Page CustomerCard (ID 50101).
+/// </summary>
+page 50101 CustomerCardDetail
 {
     ApplicationArea = All;
     Caption = 'CustomerCard';
     PageType = Card;
-    SourceTable = CustomerDetails;
-    
+    SourceTable = "Customer Detail";
+
+
     layout
     {
         area(Content)
@@ -12,7 +16,7 @@ page 50101 CustomerCard
             group(General)
             {
                 Caption = 'General';
-                
+
                 field(CustomerId; Rec.CustomerId)
                 {
                     ToolTip = 'Specifies the value of the CustomerId field.', Comment = '%';
@@ -20,10 +24,13 @@ page 50101 CustomerCard
                 field(CustomerName; Rec.CustomerName)
                 {
                     ToolTip = 'Specifies the value of the CustomerName field.', Comment = '%';
+
+
                 }
                 field(CustomerEmailAddress; Rec.CustomerEmailAddress)
                 {
                     ToolTip = 'Specifies the value of the CustomerEmailAdress field.', Comment = '%';
+
                 }
                 field(CustomerContacts; Rec.CustomerContacts)
                 {
