@@ -72,16 +72,15 @@ table 50100 "Customer Detail"
     trigger OnInsert()
     var
         Noseriesmgt: Codeunit NoSeriesManagement;
-        OnInsertError: Label 'This field cannot be empty';
+
     begin
 
         if CustomerName = '' then begin
-            Error(OnInsertError);
-
+            Error('this field cannot be empty');
         end;
-        if CustomerEmailAddress = '' then begin
-            Error(OnInsertError);
-        end;
+        // if CustomerEmailAddress = '' then begin
+        //     Error('this field cannot be empty');
+        // end;
 
         If CustomerId = '' then begin
             Noseriesmgt.InitSeries('CSi', Noseries, 0D, CustomerId, Noseries);
