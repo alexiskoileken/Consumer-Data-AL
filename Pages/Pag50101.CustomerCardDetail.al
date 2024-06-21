@@ -9,8 +9,10 @@ page 50101 CustomerCardDetail
     SourceTable = "Customer Detail";
 
 
+
     layout
     {
+
         area(Content)
         {
             group(General)
@@ -36,9 +38,18 @@ page 50101 CustomerCardDetail
                 {
                     ToolTip = 'Specifies the value of the Customer Contacts field.', Comment = '%';
                 }
-                field(CreditLimit; Rec.CreditLimit)
+                field(ProductName; Rec.ProductName)
                 {
-                    ToolTip = 'Specifies the value of the Credit Limit field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Product Price  field.', Comment = '%';
+                }
+                field(ProductPrice; Rec.ProductPrice)
+                {
+                    ToolTip = 'Specifies the value of the Product price  field.', Comment = '%';
+
+                }
+                field(CustomerPoints; Rec.CustomerPoints)
+                {
+                    ToolTip = 'Specifies the value of the Customer Points field.', Comment = '%';
                 }
                 field(PaymentTerms; Rec.PaymentTerms)
                 {
@@ -48,7 +59,32 @@ page 50101 CustomerCardDetail
                 {
                     ToolTip = 'Specifies the value of the Discount Terms field.', Comment = '%';
                 }
+
             }
         }
     }
+    actions
+    {
+        area(Processing)
+        {
+            action(CalcPoints)
+            {
+                ApplicationArea = All;
+
+                trigger OnAction()
+
+                begin
+                    CalculatePoints();
+                end;
+            }
+        }
+
+    }
+    procedure CalculatePoints()
+    var
+        points: Record "Customer Detail";
+
+    begin
+        points.CustomerPoints := points.ProductPrice * 0.1;
+    end;
 }

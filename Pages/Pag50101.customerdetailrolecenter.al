@@ -21,7 +21,14 @@ page 50103 "customer detail rolecenter"
                     ApplicationArea = All;
                     RunObject = page "Customer Detail List";
                 }
+                action(Productlist)
+                {
+                    Caption = 'Product list';
+                    ApplicationArea = All;
+                    RunObject = page "product details list";
+                }
             }
+
         }
     }
 }

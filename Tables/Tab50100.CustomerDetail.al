@@ -12,9 +12,10 @@ table 50100 "Customer Detail"
             Caption = 'Customer Id';
             Editable = false;
         }
-        field(2; CustomerName; Code[50])
+        field(2; CustomerName; Text[50])
         {
             Caption = 'Customer Name';
+            NotBlank = true;
 
 
         }
@@ -22,6 +23,7 @@ table 50100 "Customer Detail"
         field(3; CustomerEmailAddress; Code[50])
         {
             Caption = 'Customer Email Address';
+            NotBlank = true;
 
             trigger OnValidate()
             var
@@ -35,6 +37,7 @@ table 50100 "Customer Detail"
         field(4; CustomerContacts; Code[20])
         {
             Caption = 'Customer Contacts';
+            NotBlank = true;
             trigger OnValidate()
             var
                 PhoneNumber: Codeunit "customer validations";
@@ -42,53 +45,96 @@ table 50100 "Customer Detail"
                 PhoneNumber.OnCustomerPhoneNumberAdd(Rec.CustomerContacts);
             end;
         }
-        field(5; CreditLimit; Decimal)
+        field(5; ProductName; Text[50])
         {
-            Caption = 'Credit Limit';
+            DataClassification = ToBeClassified;
+            Caption = 'Product Name';
+            TableRelation = ProductsDetails."Product Name";
+            trigger OnValidate()
+            var
+                ProductRec: Record ProductsDetails;
+            begin
+
+                ProductRec.SetRange("Product Name", ProductName);
+
+
+                if ProductRec.FindFirst() then begin
+                    ProductPrice := ProductRec."Product Price";
+                end else begin
+                    Error('The product does not exist in the ProductsDetails table.');
+                end;
+            end;
+        }
+        field(11; ProductPrice; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Product Price';
+            Editable = false;
+
+
+
+
 
         }
-        field(6; PaymentTerms; Option)
+
+        field(6; CustomerPoints; Decimal)
+        {
+            Caption = 'Customer Points';
+            Editable = false;
+
+
+        }
+        field(7; PaymentTerms; Option)
         {
             Caption = 'Payment Terms';
             OptionMembers = "Mpesa","paypal","Pioneer","Bank";
         }
-        field(7; DiscountTerms; Decimal)
+        field(8; DiscountTerms; Decimal)
         {
             Caption = 'Discount Terms';
         }
-        field(8; Noseries; code[20])
+        field(9; Noseries; code[20])
         {
             DataClassification = ToBeClassified;
             TableRelation = "No. Series";
         }
+        field(10; AmountPayable; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Amount payable';
+        }
     }
     keys
     {
-        key(PK; CustomerId)
+        key(PK; CustomerName, CustomerEmailAddress)
         {
             Clustered = true;
         }
     }
+
+
     trigger OnInsert()
     var
         Noseriesmgt: Codeunit NoSeriesManagement;
 
     begin
-
-        if CustomerName = '' then begin
-            Error('this field cannot be empty');
-        end;
-        // if CustomerEmailAddress = '' then begin
-        //     Error('this field cannot be empty');
-        // end;
-
         If CustomerId = '' then begin
             Noseriesmgt.InitSeries('CSi', Noseries, 0D, CustomerId, Noseries);
         end;
 
-
-
     end;
+
+    procedure CalculatePoints()
+    var
+        points: Record "Customer Detail";
+
+    begin
+        points.CustomerPoints := points.ProductPrice * 0.1;
+        Message('Haa value');
+    end;
+
+
+
 
 }
 
