@@ -15,12 +15,10 @@ table 50100 "Customer Detail"
         field(2; CustomerName; Text[50])
         {
             Caption = 'Customer Name';
-            NotBlank = true;
-
 
         }
 
-        field(3; CustomerEmailAddress; Code[50])
+        field(3; CustomerEmailAddress; Text[50])
         {
             Caption = 'Customer Email Address';
             NotBlank = true;
@@ -54,15 +52,16 @@ table 50100 "Customer Detail"
             var
                 ProductRec: Record ProductsDetails;
             begin
-
                 ProductRec.SetRange("Product Name", ProductName);
-
 
                 if ProductRec.FindFirst() then begin
                     ProductPrice := ProductRec."Product Price";
+                    CustomerPoints := ProductRec."Product Price" * 0.1;
+
                 end else begin
                     Error('The product does not exist in the ProductsDetails table.');
                 end;
+
             end;
         }
         field(11; ProductPrice; Decimal)
@@ -71,10 +70,6 @@ table 50100 "Customer Detail"
             Caption = 'Product Price';
             Editable = false;
 
-
-
-
-
         }
 
         field(6; CustomerPoints; Decimal)
@@ -82,12 +77,12 @@ table 50100 "Customer Detail"
             Caption = 'Customer Points';
             Editable = false;
 
-
         }
         field(7; PaymentTerms; Option)
         {
             Caption = 'Payment Terms';
             OptionMembers = "Mpesa","paypal","Pioneer","Bank";
+
         }
         field(8; DiscountTerms; Decimal)
         {
@@ -124,13 +119,16 @@ table 50100 "Customer Detail"
 
     end;
 
+    /// <summary>
+    /// CalculatePoints.
+    /// </summary>
     procedure CalculatePoints()
     var
         points: Record "Customer Detail";
 
     begin
         points.CustomerPoints := points.ProductPrice * 0.1;
-        Message('Haa value');
+
     end;
 
 

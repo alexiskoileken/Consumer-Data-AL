@@ -15,9 +15,9 @@ page 50101 CustomerCardDetail
 
         area(Content)
         {
-            group(General)
+            group(Personalinfo)
             {
-                Caption = 'General';
+                Caption = 'Personal info';
 
                 field(CustomerId; Rec.CustomerId)
                 {
@@ -26,6 +26,8 @@ page 50101 CustomerCardDetail
                 field(CustomerName; Rec.CustomerName)
                 {
                     ToolTip = 'Specifies the value of the CustomerName field.', Comment = '%';
+                    ShowMandatory = true;
+                    NotBlank = true;
 
 
                 }
@@ -38,6 +40,10 @@ page 50101 CustomerCardDetail
                 {
                     ToolTip = 'Specifies the value of the Customer Contacts field.', Comment = '%';
                 }
+            }
+            group(Products)
+            {
+                Caption = 'Shopping ';
                 field(ProductName; Rec.ProductName)
                 {
                     ToolTip = 'Specifies the value of the Product Price  field.', Comment = '%';
@@ -62,29 +68,25 @@ page 50101 CustomerCardDetail
 
             }
         }
+
     }
     actions
     {
         area(Processing)
         {
-            action(CalcPoints)
+            action(TodaysDate)
             {
                 ApplicationArea = All;
+                Caption = 'Todays Date';
 
                 trigger OnAction()
-
+                var
                 begin
-                    CalculatePoints();
+                    Message('Today''s date is: %1', Today());
                 end;
             }
         }
-
     }
-    procedure CalculatePoints()
-    var
-        points: Record "Customer Detail";
 
-    begin
-        points.CustomerPoints := points.ProductPrice * 0.1;
-    end;
+
 }
